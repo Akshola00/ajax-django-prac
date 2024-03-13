@@ -4,8 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi nam omnis nisi quaerat et molestiae repudiandae vero accusantium, veniam nostrum impedit tempora delectus quae unde esse autem ea incidunt dolor.
+    <h1>List of live data</h1>
+    <ul id="display-data">
+
+    </ul>
+    <script>
+        $(document).ready(function(){
+            setInterval(function(){
+                $.ajax({
+                    type:'GET',
+                    url: "{% url 'getprofiles' %}",
+                    success: function(response){
+                        console.log(response);
+                    },
+                    error: function(response){
+                        alert('error getting data')
+                    }
+                });
+            },1000);
+        });
+    </script>
 </body>
 </html>
