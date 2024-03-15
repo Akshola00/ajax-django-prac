@@ -8,9 +8,28 @@
 </head>
 <body>
     <h1>List of live data</h1>
-    <ul id="display-data">
+    <ul id="display">
 
     </ul>
+
+    <h1>submit form</h1>
+    <form id="post-form" method="post">
+        {% csrf_token %}
+
+        <div>
+            <p>name</p>
+            <input type="text" name="name" id="name"> <br>
+        </div>
+        <div>
+            <p>name</p>
+            <input type="email" name="email" id="email"> <br>
+        </div>
+        <div>
+            <p>name</p>
+            <input type="text" name="bio" id="bio"> <br>
+        </div>
+        <input type="submit">
+    </form>
     <script>
         $(document).ready(function(){
             setInterval(function(){
@@ -18,13 +37,31 @@
                     type:'GET',
                     url: "{% url 'getprofiles' %}",
                     success: function(response){
-                        console.log(response);
+                        $("#display").empty();
+                        for (var key in response.profiles){
+                            var temp = "<li>"+response.profiles[key].name+"</li>";
+                            $("#display").append(temp);
+                        }
                     },
                     error: function(response){
                         alert('error getting data')
                     }
                 });
             },1000);
+        });
+        $(document).on('submit', '#post-form',function (e){
+                e.preventDefault();
+                $.ajax({
+                    type:'POST',
+                    url: "/create",
+                    data: {
+                        name:$('#name').val(),
+                        email:$('#email').val(),
+                        bio:$('#bio').val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    }
+                });
+            
         });
     </script>
 </body>
